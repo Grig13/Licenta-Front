@@ -10,6 +10,7 @@ import { NewsService } from 'src/services/news.service';
 export class NewsComponent implements OnInit {
 
   news: News[] = [];
+  visible?: boolean;
 
   constructor(
     private newsService: NewsService
@@ -18,6 +19,11 @@ export class NewsComponent implements OnInit {
   ngOnInit(): void {
     this.httpGetNews();
   }
+
+  showDialog() {
+      this.visible = true;
+  }
+
 
   httpGetNews(){
     this.newsService.getNews().subscribe({
