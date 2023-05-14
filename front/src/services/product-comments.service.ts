@@ -11,25 +11,25 @@ export class ProductCommentsService {
 
   private readonly url = "ProductComment";
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-  public getProductComments(): Observable<ProductComments[]>{
-    return this.httpClient.get<ProductComments[]>(`${environment.apiUrl}/${this.url}`);
+  getCommentsByProductId(productId: string): Observable<ProductComments[]>{
+    return this.http.get<ProductComments[]>(`${environment.apiUrl}/${this.url}/product/${productId}`);
   }
 
-  public getProductCommentsById(id: string): Observable<ProductComments>{
-    return this.httpClient.get<ProductComments>(`${environment.apiUrl}/${this.url}/${id}`);
+  getCommentById(id: string): Observable<ProductComments>{
+    return this.http.get<ProductComments>(`${environment.apiUrl}/${this.url}/${id}`);
+  }
+  
+  addComment(comment: ProductComments): Observable<ProductComments>{
+    return this.http.post<ProductComments>(`${environment.apiUrl}/${this.url}`, comment);
   }
 
-  public addProductComment(commentToAdd: ProductComments): Observable<ProductComments>{
-    return this.httpClient.put<ProductComments>(`${environment.apiUrl}/${this.url}`, commentToAdd);
+  updateComment(id: string, comment: ProductComments): Observable<void>{
+    return this.http.put<void>(`${environment.apiUrl}/${this.url}/${id}`, comment);
   }
 
-  public editProductComment(id: string, newComment: ProductComments): Observable<ProductComments>{
-    return this.httpClient.patch<ProductComments>(`${environment.apiUrl}/${this.url}/${id}`, newComment);
-  }
-
-  public deleteProductComment(id: string): Observable<ProductComments>{
-    return this.httpClient.delete<ProductComments>(`${environment.apiUrl}/${this.url}/${id}`);
+  deleteComment(id: string): Observable<void>{
+    return this.http.delete<void>(`${environment.apiUrl}/${this.url}/${id}`);
   }
 }

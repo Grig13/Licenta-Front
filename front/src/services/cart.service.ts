@@ -11,38 +11,18 @@ export class CartService {
 
   private readonly url = "Cart";
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-  public getCarts(): Observable<Cart[]>{
-    return this.httpClient.get<Cart[]>(`${environment.apiUrl}/${this.url}`);
+  addToCart(userId: string, productId: string, quantity: number): Observable<void>{
+    return this.http.post<void>(`${environment.apiUrl}/${this.url}/${userId}/products/${productId}`, 1);
   }
 
-  public getCartById(id: string): Observable<Cart>{
-    return this.httpClient.get<Cart>(`${environment.apiUrl}/${this.url}/${id}`);
+  removeFromCart(userId: string, productId: string): Observable<void>{
+    return this.http.delete<void>(`${environment.apiUrl}/${this.url}/${userId}/products/${productId}`);
   }
 
-  public addProductsToCart(id: string, productsId: string[]): Observable<Cart>{
-    return this.httpClient.post<Cart>(`${environment.apiUrl}/${this.url}/${id}/add-product`, productsId);
-  }
-
-  public addProductToCart(id: string, productId: string): Observable<Cart>{
-    return this.httpClient.post<Cart>(`${environment.apiUrl}/${this.url}/${id}/add-product/${productId}`, productId);
-  }
-
-  public removeProductFromCart(id: string, productId: string): Observable<Cart>{
-    return this.httpClient.delete<Cart>(`${environment.apiUrl}/${this.url}/${id}/${productId}`);
-  }
-
-  public addCarts(cartToAdd: Cart): Observable<Cart>{
-    return this.httpClient.post<Cart>(`${environment.apiUrl}/${this.url}`, cartToAdd);
-  }
-
-  public editCart(id: string, newCart: Cart): Observable<Cart>{
-    return this.httpClient.patch<Cart>(`${environment.apiUrl}/${this.url}/${id}`, newCart);
-  }
-
-  public deleteCart(id: string): Observable<Cart>{
-    return this.httpClient.delete<Cart>(`${environment.apiUrl}/${this.url}/${id}`);
+  clearCart(userId: string): Observable<void>{
+    return this.http.delete<void>(`${environment.apiUrl}/${this.url}/${userId}`);
   }
 
 }

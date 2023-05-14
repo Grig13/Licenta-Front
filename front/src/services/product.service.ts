@@ -11,34 +11,25 @@ export class ProductService {
 
   private readonly url = "Product";
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-  public getProducts(): Observable<Product[]>{
-    return this.httpClient.get<Product[]>(`${environment.apiUrl}/${this.url}`)
+  getAllProducts(): Observable<Product[]>{
+    return this.http.get<Product[]>(`${environment.apiUrl}/${this.url}`)
   }
 
-  public getProductsById(id: string): Observable<Product>{
-    return this.httpClient.get<Product>(`${environment.apiUrl}/${this.url}/${id}`);
+  getProductById(id: string): Observable<Product>{
+    return this.http.get<Product>(`${environment.apiUrl}/${this.url}/${id}`);
   }
 
-  public addCommentToProduct(id: string, commentId: string): Observable<Product>{
-    return this.httpClient.post<Product>(`${environment.apiUrl}/${this.url}/${id}/add-comment/${commentId}`, commentId);
+  addProduct(product: Product): Observable<void>{
+    return this.http.post<void>(`${environment.apiUrl}/${this.url}`, product);
   }
 
-  public removeCommentFromProduct(id: string, commentId: string): Observable<Product>{
-    return this.httpClient.delete<Product>(`${environment.apiUrl}/${this.url}/${id}/${commentId}`);
+  updateProduct(id: string, product: Product): Observable<Product>{
+    return this.http.put<Product>(`${environment.apiUrl}/${this.url}/${id}`, product);
   }
 
-  public addProducts(productToAdd: Product): Observable<Product>{
-    return this.httpClient.post<Product>(`${environment.apiUrl}/${this.url}`, productToAdd);
+  deleteProduct(id: string): Observable<void>{
+    return this.http.delete<void>(`${environment.apiUrl}/${this.url}/${id}`);
   }
-
-  public editProduct(id: string, newProduct: Product): Observable<Product>{
-    return this.httpClient.patch<Product>(`${environment.apiUrl}/${this.url}/${id}`, newProduct);
-  }
-
-  public deleteProduct(id: string): Observable<Product>{
-    return this.httpClient.delete<Product>(`${environment.apiUrl}/${this.url}/${id}`);
-  }
-
 }

@@ -1,9 +1,9 @@
-import { Product } from "./product.model";
-
-export class ProductComments{
-    id!: string;
-    content!: string;
-    grade?: number;
-    productId!: string;
-    product?: Product;
+export interface ProductComments {
+    id: string;
+    productId: string;
+    userId: string;
+    comment: string;
+    rating: number;
+    createdAt: Date;
 }
+  

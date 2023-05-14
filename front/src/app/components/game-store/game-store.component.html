@@ -1,0 +1,151 @@
+<div class="shopping-cart">
+    <button routerLink="cart" style="border: none; color: blue; background-color: white;" type="button" pButton pRipple icon="pi pi-shopping-cart"></button>
+</div>
+
+
+<!-- =============================BUTTON FOR ADDING PRODUCTS================================= -->
+
+<div class="add-button-container">
+    <button (click)="showAddDialog()" type="button" class="btn-pos p-button-help" [style]="{width: '150px', height: '40px'}" 
+    pButton pRipple label="Add Product" icon="pi pi-plus"></button>
+</div>
+
+<div style="margin-left: 110px; margin-top: 5%;" class="card">
+    <p-dataView #dv [value]="products" [rows]="5" [paginator]="true">
+        <ng-template let-product pTemplate="listItem">
+            <div class="col-12">
+                <div class="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4">
+                    <a [routerLink]="['product', product.id, 'details']">
+                        <img class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" [src]="product.imageUrl" [alt]="product.name" />
+                    </a>
+                    <div class="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
+                        <div class="flex flex-column align-items-center sm:align-items-start gap-3">
+                            <a [routerLink]="['product', product.id, 'details']">
+                                <div class="text-2xl font-bold text-900">{{ product.name }}</div>
+                            </a>
+                            <p-rating [(ngModel)]="product.rating" [readonly]="true" [cancel]="false"></p-rating>
+                            <div class="flex align-items-center gap-3">
+                                <span class="flex align-items-center gap-2">
+                                    <i class="pi pi-tag"></i>
+                                    <span class="font-semibold">{{ product.category }}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
+                            <span class="text-2xl font-semibold">{{ 'RON ' + product.price }}</span>
+                            <button (click)="addToCart(product)" pButton icon="pi pi-shopping-cart" class="md:align-self-end mb-2 p-button-rounded"></button>
+                        </div>
+                        <div class="card-buttons">
+                            <div title="Edit Project" class="card-button pi pi-pencil" (click)="showEditDialog(product)"></div>
+                            <div title="Delete Project" class="card-button pi pi-trash" (click)="showDeleteDialog(product)"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </p-dataView>
+</div>
+
+
+
+<!-- =============================MODAL FOR ADDING PRODUCTS================================= -->
+
+<p-dialog header="Add News" [(visible)]="displayAddModal" [modal]="true" [breakpoints]="{ '960px': '75vw' }" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+    <form [formGroup]="addProductForm">
+        <label for="float-input">
+            Product Name
+        </label>
+        <br />
+        <input placeholder="Product's Title" id="float-input" type="text" pInputText formControlName="name" [style]="{width: '100%'}" />
+        <br />
+        <br />
+        <label for="float-input">Description</label>
+        <br />
+        <textarea placeholder="Product's Description" id="float-input" class="textbox form-control input-textarea" formControlName="description" rows="5" 
+            cols="61"></textarea>
+        
+        <br />
+        <br />
+        <label for="float-input">Image</label>
+        <br />
+        <input placeholder="Product's Image Link" id="float-input" type="text" pInputText formControlName="imageUrl" [style]="{width: '100%'}" />
+        <br />
+        <br />
+        <label for="float-input">Category</label>
+        <input placeholder="Add Category for product" id="float-input" type="text" pInputText formControlName="category" [style]="{width: '100%'}" />
+        <br />
+        <br />
+        <label for="float-input">Price</label>
+        <input placeholder="Set price for product(in RON)" id="float-input" type="text" pInputText formControlName="price" [style]="{width: '100%'}" />
+        <br />
+        <br />
+    </form>
+    <div class="buttons-container">
+        <button pButton pRipple type="submit" label="Close" (click) = "hideAddDialog()" 
+            class="modal-button btn-pos p-button-danger"></button>
+    
+        <button pButton pRipple type="submit" label="Submit" (click)="addProduct()" 
+            class="modal-button btn-pos p-button-success"></button>
+        </div>
+</p-dialog>
+
+<!-- =============================CONFIRMATION DELETE DIALOGUE================================= -->
+
+<p-dialog [(visible)]="displayConfirmationModal" [modal]="true" [style]="{width: '550px'}"
+    [draggable]="false" [resizable]="false">
+    <div class="confirm-dialogue">
+      <i class="confirm-icon pi pi-times-circle"></i>
+      <h3 class="confirm-header">Are you sure?</h3>
+      <p class="confirm-text m-0">
+        Do you really want to delete this product? This process cannot be
+        undone.
+      </p>
+      <div class="confirm-buttons-dialogue">
+        <button style="width: 75px" pButton type="button" label="Cancel" class="p-button-danger" (click)="hideDeleteDialog()"></button>
+        <button style="width: 75px" pButton type="button" label="Delete" class="p-button-success" (click)="deleteProduct(productIdToDelete)"></button>
+      </div>
+    </div>
+</p-dialog>
+
+
+<!-- =============================MODAL FOR EDITING A PROJECT================================= -->
+
+<p-dialog header="Edit Project" [(visible)]="displayEditModal" [modal]="true" [style]="{width: '550px'}" 
+  [draggable]="false" [resizable]="false">
+  <form [formGroup]="editProductForm">
+    <label for="float-input">
+        Product Name
+    </label>
+    <br />
+    <input placeholder="Product's Title" id="float-input" type="text" pInputText formControlName="name" [style]="{width: '100%'}" />
+    <br />
+    <br />
+    <label for="float-input">Description</label>
+    <br />
+    <textarea placeholder="Product's Description" id="float-input" class="textbox form-control input-textarea" formControlName="description" rows="5" 
+        cols="61"></textarea>
+    
+    <br />
+    <br />
+    <label for="float-input">Image</label>
+    <br />
+    <input placeholder="Product's Image Link" id="float-input" type="text" pInputText formControlName="imageUrl" [style]="{width: '100%'}" />
+    <br />
+    <br />
+    <label for="float-input">Category</label>
+    <input placeholder="Add Category for product" id="float-input" type="text" pInputText formControlName="category" [style]="{width: '100%'}" />
+    <br />
+    <br />
+    <label for="float-input">Price</label>
+    <input placeholder="Set price for product(in RON)" id="float-input" type="text" pInputText formControlName="price" [style]="{width: '100%'}" />
+    <br />
+    <br />
+  </form>
+  <div class="buttons-container">
+    <button pButton pRipple type="button" label="Close" (click) = "hideEditDialog()" 
+      class="modal-button btn-pos p-button-danger"></button>
+
+    <button pButton pRipple type="submit" label="Submit" (click)="editProduct()"
+     class="modal-button btn-pos p-button-success"></button>
+  </div>
+</p-dialog>

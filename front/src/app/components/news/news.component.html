@@ -1,2 +1,129 @@
-<p>news works!</p>
+<!-- =============================BUTTON FOR ADDING NEWS================================= -->
+
+<div class="add-button-container">
+    <button (click)="showAddDialog()" type="button" class="btn-pos p-button-help" [style]="{width: '150px', height: '40px'}" 
+    pButton pRipple label="Add News" icon="pi pi-plus"></button>
+</div>
+
+<!-- =============================MODAL FOR ADDING NEWS================================= -->
+
+<p-dialog header="Add News" [(visible)]="displayAddModal" [modal]="true" [breakpoints]="{ '960px': '75vw' }" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+    <form [formGroup]="addNewsForm">
+        <label for="float-input">
+            News Title
+        </label>
+        <br />
+        <input placeholder="News Title" id="float-input" type="text" pInputText formControlName="title" [style]="{width: '100%'}" />
+        <br />
+        <br />
+        <label for="float-input">Content</label>
+        <br />
+        <textarea placeholder="News Content" id="float-input" class="textbox form-control input-textarea" formControlName="content" rows="5" 
+            cols="61"></textarea>
+        
+        <br />
+        <br />
+        <label for="float-input">Image</label>
+        <br />
+        <input placeholder="News Image Link" id="float-input" type="text" pInputText formControlName="image" [style]="{width: '100%'}" />
+        <br />
+        <br />
+        <label for="float-input">Attachment</label>
+        <input placeholder="Add Attachment Link" id="float-input" type="text" pInputText formControlName="attachment" [style]="{width: '100%'}" />
+    </form>
+    <div class="buttons-container">
+        <button pButton pRipple type="submit" label="Close" (click) = "hideAddDialog()" 
+            class="modal-button btn-pos p-button-danger"></button>
+    
+        <button pButton pRipple type="submit" label="Submit" (click)="addNews()" 
+            class="modal-button btn-pos p-button-success"></button>
+        </div>
+</p-dialog>
+
+<!-- ================================NEWS CARD================================= -->
+
+<div *ngIf="(newsList|async); let listOfNews;">
+    <div *ngIf="listOfNews.length===0">
+      <h3>There are currently no news.</h3>
+    </div>
+    <div class="card-container" *ngFor="let news of listOfNews">
+        <p-card class="card-content" header={{news.title}} [style]="{width: '1000px', height: 'auto'}" styleClass="p-card-shadow">
+     
+            <div class="card-buttons">
+                <div title="Edit Project" class="card-button pi pi-pencil" (click)="showEditDialog(news)"></div>
+                <div title="Delete Project" class="card-button pi pi-trash" (click)="showDeleteDialog(news)"></div>
+            </div>
+
+            <div class="image-container">
+                <img src="{{news.image}}">
+            </div>
+
+            <ng-template pTemplate="content">
+                <textarea class="textbox" rows="10" cols="50" readonly>{{news.content}}</textarea>
+            </ng-template>
+            
+            <div *ngIf="news.attachment.length > 0">
+                <div>
+                    Click here for more <a href="{{news.attachment}}">information</a>
+                </div>
+            </div>
+            <br>
+            <br>
+
+        </p-card> 
+    </div>
+</div>
+
+
+<!-- =============================CONFIRMATION DELETE DIALOGUE================================= -->
+
+<p-dialog [(visible)]="displayConfirmationDialog" [modal]="true" [style]="{width: '550px'}"
+    [draggable]="false" [resizable]="false">
+    <div class="confirm-dialogue">
+      <i class="confirm-icon pi pi-times-circle"></i>
+      <h3 class="confirm-header">Are you sure?</h3>
+      <p class="confirm-text m-0">
+        Do you really want to delete this news? This process cannot be
+        undone.
+      </p>
+      <div class="confirm-buttons-dialogue">
+        <button style="width: 75px" pButton type="button" label="Cancel" class="p-button-danger" (click)="hideDeleteDialog()"></button>
+        <button style="width: 75px" pButton type="button" label="Delete" class="p-button-success" (click)="deleteNews(newsIdToDelete)"></button>
+      </div>
+    </div>
+</p-dialog>
+
+
+<!-- =============================MODAL FOR EDITING A PROJECT================================= -->
+
+<p-dialog header="Edit Project" [(visible)]="displayEditModal" [modal]="true" [style]="{width: '550px'}" 
+  [draggable]="false" [resizable]="false">
+  <form [formGroup]="editNewsForm">
+    <label for="float-input">Title</label>
+    <br />
+    <input placeholder="News Title" id="float-input" type="text" pInputText formControlName="title" [style]="{width: '100%'}"/>
+    <br />
+    <br />
+    <label for="float-input">Content</label>
+    <br />
+    <textarea placeholder="News Content" id="float-input" 
+        class="textbox form-control input-textarea" formControlName="content" rows="5" cols="60" ></textarea>
+
+    <label for="float-input">Image</label>
+    <br />
+    <input placeholder="News Image Link" id="float-input" type="text" pInputText formControlName="image" [style]="{width: '100%'}" />
+    <br />
+    <br />
+    <label for="float-input">Attachment</label>
+    <input placeholder="Add Attachment Link" id="float-input" type="text" pInputText formControlName="attachment" [style]="{width: '100%'}" />
+  </form>
+  <div class="buttons-container">
+    <button pButton pRipple type="button" label="Close" (click) = "hideEditDialog()" 
+      class="modal-button btn-pos p-button-danger"></button>
+
+    <button pButton pRipple type="submit" label="Submit" (click)="editNews()"
+     class="modal-button btn-pos p-button-success"></button>
+  </div>
+</p-dialog>
+
 <router-outlet></router-outlet>

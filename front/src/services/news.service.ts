@@ -26,7 +26,7 @@ export class NewsService {
   }
 
   public editNews(id: string, newNews: News): Observable<News>{
-    return this.httpClient.patch<News>(`${environment.apiUrl}/${this.url}/${id}`, newNews);
+    return this.httpClient.put<News>(`${environment.apiUrl}/${this.url}/${id}`, newNews);
   }
 
   public deleteNews(id: string): Observable<News>{

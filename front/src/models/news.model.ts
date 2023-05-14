@@ -1,6 +1,7 @@
 export class News{
-    id!: string;
+    id?: string;
+    title!: string;
     content!: string;
-    image?: string;
-    attachment?: string;
+    image!: string;
+    attachment!: string;
 }
