@@ -5,7 +5,11 @@
   "projects": {
     "front": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:application": {
+          "strict": true
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -72,7 +76,8 @@
               "browserTarget": "front:build:production"
             },
             "development": {
-              "browserTarget": "front:build:development"
+              "browserTarget": "front:build:development",
+              "proxyConfig": "proxy.conf.js"
             }
           },
           "defaultConfiguration": "development"

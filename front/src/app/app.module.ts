@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { HomeComponent } from './components/home/home.component';
 import { NewsComponent } from './components/news/news.component';
 import { HttpClientModule } from '@angular/common/http';
 import { DialogModule } from 'primeng/dialog';
@@ -19,6 +18,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GameStoreComponent } from './components/game-store/game-store.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { CartComponent } from './components/cart/cart.component';
+import { AuthConfigModule } from './auth/auth-config.module';
+import { HomeComponent } from './home/home.component';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import { CartComponent } from './components/cart/cart.component';
     DataViewModule,
     RatingModule,
     BrowserAnimationsModule,
-    NoopAnimationsModule
+    NoopAnimationsModule,
+    AuthConfigModule
   ],
   providers: [],
   bootstrap: [AppComponent]
