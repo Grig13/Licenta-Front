@@ -1,11 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { NewsComponent } from './components/news/news.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -18,15 +16,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GameStoreComponent } from './components/game-store/game-store.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { CartComponent } from './components/cart/cart.component';
-import { AuthConfigModule } from './auth/auth-config.module';
-import { HomeComponent } from './home/home.component';
+import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
-    HomeComponent,
     NewsComponent,
     GameStoreComponent,
     ProductDetailsComponent,
@@ -34,19 +31,26 @@ import { HomeComponent } from './home/home.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     HttpClientModule,
     DialogModule,
     ReactiveFormsModule,
-    FormsModule,
+    FormsModule,  
     ButtonModule,
     CardModule,
+    CommonModule,
     SharedModule,
     DataViewModule,
+    FormsModule,
+    ReactiveFormsModule,
     RatingModule,
     BrowserAnimationsModule,
     NoopAnimationsModule,
-    AuthConfigModule
+    RouterModule.forRoot([
+      {path: 'news', component: NewsComponent, pathMatch: 'full'},
+      {path: 'store', component: GameStoreComponent, pathMatch: 'full'},
+      { path: 'store/product/:id/details', component: ProductDetailsComponent},
+      { path: 'store/cart', component: CartComponent, pathMatch: 'full'},
+    ])
   ],
   providers: [],
   bootstrap: [AppComponent]
